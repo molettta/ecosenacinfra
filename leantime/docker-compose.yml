@@ -1,0 +1,25 @@
+services:
+  leantime:
+    image: leantime/leantime:${LEANTIME_VERSION:-latest}
+    container_name: leantime
+    restart: unless-stopped
+    environment:
+      # Database connection
+      LEAN_DB_HOST: ${LEAN_DB_HOST}
+      LEAN_DB_DATABASE: ${LEAN_DB_DATABASE}
+      LEAN_DB_USER: ${LEAN_DB_USER}
+      LEAN_DB_PASSWORD: ${LEAN_DB_PASSWORD}
+      # Optional: set PHP timezone for logs if needed
+      TZ: ${TIMEZONE:-America/Sao_Paulo}
+    ports:
+      - "${LEANTIME_HTTP_PORT:-8081}:8080"
+    networks:
+      - mysql_default
+      - default
+
+networks:
+  mysql_default:
+    external: true
+  default:
+    name: leantime_default
+

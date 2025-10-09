@@ -1,0 +1,9 @@
+# ACL file for Mosquitto
+# Define permissions for users/topics
+
+# Example:
+# user admin
+# topic readwrite #
+
+# Default: deny all
+

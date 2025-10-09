@@ -1,0 +1,58 @@
+# Arquivos de ambiente com senhas reais
+.env
+*.env
+!.env.example
+
+# Dados dos volumes Docker
+**/data/
+**/_data/
+**/volumes/
+**/wp-content/uploads/
+**/wp-content/cache/
+
+# Logs
+*.log
+**/logs/
+
+# Certificados SSL
+*.pem
+*.key
+*.crt
+*.cert
+
+# Arquivos temporários
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+
+# Backups
+*.sql.gz
+*.tar.gz
+*.zip
+**/backups/
+
+# Sistema operacional
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.sublime-*
+
+# Node modules (se usar Node-RED customizações)
+node_modules/
+package-lock.json
+
+# Mosquitto
+**/mosquitto/data/
+**/mosquitto/log/
+
+# N8N
+**/n8n/.n8n/
+
+# Leantime
+**/leantime/userfiles/
+

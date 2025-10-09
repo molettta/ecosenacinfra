@@ -1,0 +1,64 @@
+# Caddy reverse proxy for HTTP (port 80). Cloudflare will handle HTTPS.
+
+{
+    auto_https off
+    debug
+}
+
+http://leantime.adspg.tec.br {
+    log
+    header {
+        # Replace Leantime's CSP with a more permissive one for fonts
+        -Content-Security-Policy
+        Content-Security-Policy "default-src 'self' 'unsafe-inline';base-uri 'self';;script-src 'self' 'unsafe-inline' 'unsafe-eval' unpkg.com;font-src 'self' data: https:;img-src * 'self' *.leantime.io *.amazonaws.com data: blob: marketplace.localhost;frame-src 'self' *.google.com *.microsoft.com *.live.com;frame-ancestors 'self' *.google.com *.microsoft.com *.live.com"
+        
+        # Force HTTPS and fix mixed content issues
+        Strict-Transport-Security "max-age=31536000; includeSubDomains"
+        X-Forwarded-Proto "https"
+        X-Forwarded-Ssl "on"
+    }
+    
+    reverse_proxy leantime:8080 {
+        header_up Host {host}
+        header_up X-Forwarded-Proto https
+        header_up X-Forwarded-Ssl on
+    }
+}
+
+http://n8n.adspg.tec.br {
+    log
+    reverse_proxy n8n:5678
+}
+
+http://nodered.adspg.tec.br {
+    log
+    reverse_proxy nodered:1880
+}
+
+http://churras.adspg.tec.br {
+    log
+    reverse_proxy nodered-churrasqueira:1880
+}
+
+http://adspg.tec.br, http://www.adspg.tec.br {
+    log
+    header {
+        # WordPress specific headers
+        -Content-Security-Policy
+        Content-Security-Policy "default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob:; img-src 'self' data: blob: https:; media-src 'self' data: blob: https:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https:; style-src 'self' 'unsafe-inline' https:; font-src 'self' data: https:; connect-src 'self' https:; frame-src 'self' https:; object-src 'none'; base-uri 'self';"
+        
+        # Force HTTPS and fix mixed content issues
+        Strict-Transport-Security "max-age=31536000; includeSubDomains"
+        X-Forwarded-Proto "https"
+        X-Forwarded-Ssl "on"
+    }
+    
+    reverse_proxy wordpress:80 {
+        header_up Host {host}
+        header_up X-Forwarded-Proto https
+        header_up X-Forwarded-Ssl on
+        header_up X-Real-IP {remote}
+        header_up X-Forwarded-For {remote}
+    }
+}
+

@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  nodered-churrasqueira:
+    image: nodered/node-red:latest
+    container_name: nodered-churrasqueira
+    restart: unless-stopped
+    ports:
+      - "${NODE_RED_CHURRAS_PORT:-1881}:1880"
+    volumes:
+      - ./data:/data
+    environment:
+      - NODE_RED_USERNAME=${NODE_RED_USERNAME}
+      - NODE_RED_PASSWORD=${NODE_RED_PASSWORD}
+      - TZ=${TIMEZONE:-America/Sao_Paulo}
+    networks:
+      - default
+
+networks:
+  default:
+    name: nodered_churras_default
+
