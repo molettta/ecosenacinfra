@@ -1,0 +1,38 @@
+# Dados do PostgreSQL (volumes Docker)
+_data/
+
+# Backups de configuração
+*.save
+*.bak
+*.backup
+
+# Logs do PostgreSQL
+*.log
+logs/
+
+# Dumps de banco de dados
+*.sql.gz
+*.dump
+*.backup
+
+# Arquivos temporários
+*.tmp
+*.temp
+.DS_Store
+Thumbs.db
+
+# Arquivos de ambiente
+.env
+.env.local
+.env.*.local
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Arquivos de PID
+*.pid
+

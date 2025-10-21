@@ -1,0 +1,33 @@
+# Dados do Wiki.js (volumes Docker)
+_data/
+
+# Backups antigos
+*.bak
+*.backup
+docker-compose*.bak
+
+# Logs
+*.log
+logs/
+
+# Arquivos temporários
+*.tmp
+*.temp
+.DS_Store
+Thumbs.db
+
+# Arquivos de ambiente (se houver)
+.env
+.env.local
+.env.*.local
+
+# Node modules (se houver)
+node_modules/
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+

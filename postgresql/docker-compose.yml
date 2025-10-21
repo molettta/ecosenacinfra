@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  postgresql:
+    image: postgres:latest
+    container_name: princ_postgresql
+    restart: always
+    environment:
+      POSTGRES_DB: princ           # Nome do banco de dados a ser criado
+      POSTGRES_USER: prof          # Nome do usuário
+      POSTGRES_PASSWORD: prof123   # Senha do usuário
+      POSTGRES_ROOT_PASSWORD: cachorro  # Senha do usuário root (postgres)
+    ports:
+      - "5432:5432"               # Expondo a porta do PostgreSQL
+    volumes:
+      - postgres_data:/var/lib/postgresql/data    # Usando volume nomeado
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql  # Montando o script de inicialização
+    command: postgres -c listen_addresses='*' -c max_connections=200 -c shared_buffers=256MB
+    networks:
+      - princ_network
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: princ_pgadmin
+    restart: always
+    ports:
+      - "8083:80"                 # Mudando para porta 8083
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@princ.com
+      PGADMIN_DEFAULT_PASSWORD: admin123
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+    depends_on:
+      - postgresql
+    networks:
+      - princ_network
+
+volumes:
+  postgres_data:
+
+networks:
+  princ_network:
+    external: true
