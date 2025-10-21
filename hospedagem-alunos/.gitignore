@@ -1,0 +1,16 @@
+# Dados dos alunos
+sites/*
+!sites/.gitkeep
+alunosEsenha.txt
+
+# Backups
+backups/
+
+# Configurações FTP
+pure-ftpd/passwd
+pure-ftpd/pureftpd.passwd
+pure-ftpd/*.pdb
+
+# Logs
+*.log
+

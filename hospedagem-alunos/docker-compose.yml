@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+  # Servidor FTP para alunos enviarem arquivos
+  ftpd_server:
+    image: stilliard/pure-ftpd:latest
+    container_name: hospedagem_ftp
+    restart: always
+    ports:
+      - "21:21"                   # Porta FTP
+      - "30000-30009:30000-30009" # Portas passivas FTP
+    environment:
+      PUBLICHOST: "83.171.248.236"  # IP público do servidor
+      FTP_MAX_CLIENTS: 50
+      FTP_MAX_CONNECTIONS: 10
+    volumes:
+      - ./sites:/home/ftpusers    # Pasta compartilhada com nginx
+      - ftp_data:/etc/pure-ftpd   # Dados FTP persistentes
+    command: /run.sh -c 50 -C 10 -l puredb:/etc/pure-ftpd/pureftpd.pdb -E -j -R -P 83.171.248.236 -p 30000:30009
+
+  # Servidor Web Nginx para servir as páginas dos alunos
+  webserver:
+    image: nginx:alpine
+    container_name: hospedagem_web
+    restart: always
+    ports:
+      - "8084:80"                 # Porta do servidor web
+    volumes:
+      - ./sites:/usr/share/nginx/html  # Páginas dos alunos
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf  # Configuração nginx
+      - ./nginx/index.html:/usr/share/nginx/html/index.html  # Página inicial
+    depends_on:
+      - ftpd_server
+
+volumes:
+  ftp_data:
+

@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instruções - Hospedagem de Sites</title>
+    <style>
+        @media print {
+            body { margin: 0; }
+            .no-print { display: none; }
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            background: #f5f5f5;
+        }
+        
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+            border-bottom: 4px solid #667eea;
+            padding-bottom: 10px;
+        }
+        
+        h2 {
+            color: #764ba2;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            font-size: 1.8em;
+        }
+        
+        h3 {
+            color: #667eea;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            font-size: 1.3em;
+        }
+        
+        .subtitle {
+            color: #666;
+            font-size: 1.2em;
+            margin-bottom: 30px;
+        }
+        
+        .info-box {
+            background: #f8f9fa;
+            border-left: 5px solid #667eea;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        
+        .warning-box {
+            background: #fff3cd;
+            border-left: 5px solid #ffc107;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        
+        .success-box {
+            background: #d4edda;
+            border-left: 5px solid #28a745;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        
+        .code {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            margin: 10px 0;
+            overflow-x: auto;
+            font-size: 0.9em;
+        }
+        
+        .highlight {
+            background: #ffffcc;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-weight: bold;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+        
+        th {
+            background: #667eea;
+            color: white;
+            font-weight: bold;
+        }
+        
+        tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+        
+        ol, ul {
+            margin-left: 30px;
+            margin-top: 10px;
+            margin-bottom: 20px;
+        }
+        
+        li {
+            margin-bottom: 10px;
+        }
+        
+        .step {
+            background: #667eea;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        
+        .btn {
+            background: #667eea;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            margin: 5px;
+        }
+        
+        .btn:hover {
+            background: #764ba2;
+        }
+        
+        img {
+            max-width: 100%;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+        
+        @media print {
+            .container {
+                box-shadow: none;
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📚 Guia do Aluno</h1>
+        <p class="subtitle">Como hospedar seu site usando FTP</p>
+        
+        <div class="success-box">
+            <h3>🎉 Parabéns!</h3>
+            <p>Você foi cadastrado no sistema de hospedagem. Agora você pode publicar seus sites HTML na internet!</p>
+        </div>
+        
+        <h2>🔐 Suas Credenciais de Acesso</h2>
+        
+        <div class="info-box">
+            <table>
+                <tr>
+                    <th>Item</th>
+                    <th>Valor</th>
+                </tr>
+                <tr>
+                    <td><strong>Servidor FTP</strong></td>
+                    <td><span class="highlight">_____________________</span></td>
+                </tr>
+                <tr>
+                    <td><strong>Porta</strong></td>
+                    <td>21</td>
+                </tr>
+                <tr>
+                    <td><strong>Usuário</strong></td>
+                    <td><span class="highlight">_____________________</span></td>
+                </tr>
+                <tr>
+                    <td><strong>Senha</strong></td>
+                    <td><span class="highlight">_____________________</span></td>
+                </tr>
+                <tr>
+                    <td><strong>URL do seu site</strong></td>
+                    <td>http://<span class="highlight">_____________</span>:8084/<span class="highlight">seu_usuario</span>/</td>
+                </tr>
+            </table>
+        </div>
+        
+        <div class="warning-box">
+            <strong>⚠️ IMPORTANTE:</strong> Não compartilhe sua senha com outros alunos. Cada um tem acesso apenas à sua própria pasta.
+        </div>
+        
+        <h2>📥 Passo 1: Baixar o FileZilla</h2>
+        
+        <p>O FileZilla é um programa gratuito para enviar arquivos via FTP.</p>
+        
+        <ol>
+            <li>Acesse: <strong>https://filezilla-project.org/</strong></li>
+            <li>Clique em "Download FileZilla Client"</li>
+            <li>Baixe a versão para seu sistema operacional (Windows, Mac ou Linux)</li>
+            <li>Instale o programa normalmente</li>
+        </ol>
+        
+        <h2>🔌 Passo 2: Conectar ao Servidor</h2>
+        
+        <ol>
+            <li>Abra o FileZilla</li>
+            <li>No topo da tela, você verá 4 campos. Preencha assim:</li>
+        </ol>
+        
+        <div class="info-box">
+            <p><strong>Host:</strong> (endereço do servidor fornecido pelo professor)</p>
+            <p><strong>Username:</strong> (seu usuário)</p>
+            <p><strong>Password:</strong> (sua senha)</p>
+            <p><strong>Port:</strong> 21</p>
+        </div>
+        
+        <ol start="3">
+            <li>Clique no botão <strong>"Quickconnect"</strong> (ou "Conexão Rápida")</li>
+            <li>Se aparecer uma mensagem sobre "Unknown certificate", clique em <strong>"OK"</strong></li>
+            <li>Se a conexão for bem-sucedida, você verá seus arquivos no lado direito da tela</li>
+        </ol>
+        
+        <h2>📤 Passo 3: Enviar Arquivos</h2>
+        
+        <p>A tela do FileZilla está dividida em duas partes:</p>
+        
+        <ul>
+            <li><strong>Lado Esquerdo:</strong> Arquivos do seu computador</li>
+            <li><strong>Lado Direito:</strong> Arquivos no servidor (seu site)</li>
+        </ul>
+        
+        <div class="info-box">
+            <h3>Para enviar arquivos:</h3>
+            <ol>
+                <li>No lado esquerdo, navegue até a pasta onde estão seus arquivos HTML</li>
+                <li>Selecione os arquivos que quer enviar</li>
+                <li>Arraste-os para o lado direito da tela</li>
+                <li>Aguarde a transferência completar (você verá a barra de progresso)</li>
+            </ol>
+        </div>
+        
+        <h2>📁 Passo 4: Organizar Seu Site</h2>
+        
+        <p>Seu site deve ter <strong>obrigatoriamente</strong> um arquivo chamado <code>index.html</code>. Este será a página principal.</p>
+        
+        <div class="info-box">
+            <h3>Estrutura recomendada:</h3>
+            <div class="code">
+📄 index.html          ← Página principal (OBRIGATÓRIO)<br>
+📄 style.css           ← Estilos do site<br>
+📄 script.js           ← JavaScript (opcional)<br>
+📁 imagens/<br>
+   📷 logo.png<br>
+   📷 foto1.jpg<br>
+   📷 banner.gif<br>
+📁 paginas/<br>
+   📄 sobre.html<br>
+   📄 contato.html
+            </div>
+        </div>
+        
+        <h2>🌐 Passo 5: Acessar Seu Site</h2>
+        
+        <p>Depois de enviar os arquivos, você pode ver seu site online!</p>
+        
+        <div class="success-box">
+            <p><strong>Seu site estará disponível em:</strong></p>
+            <p style="font-size: 1.2em; margin-top: 10px;">
+                <code>http://SERVIDOR:8084/SEU_USUARIO/</code>
+            </p>
+            <p style="margin-top: 10px; font-size: 0.9em;">(Substitua SERVIDOR e SEU_USUARIO pelos valores corretos)</p>
+        </div>
+        
+        <h2>✏️ Exemplo de HTML Básico</h2>
+        
+        <p>Se você ainda não tem um site pronto, pode começar com este exemplo:</p>
+        
+        <div class="code">
+&lt;!DOCTYPE html&gt;<br>
+&lt;html lang="pt-BR"&gt;<br>
+&lt;head&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;meta charset="UTF-8"&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;title&gt;Meu Primeiro Site&lt;/title&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;link rel="stylesheet" href="style.css"&gt;<br>
+&lt;/head&gt;<br>
+&lt;body&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;h1&gt;Bem-vindo ao meu site!&lt;/h1&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;p&gt;Esta é minha primeira página na internet.&lt;/p&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;img src="imagens/foto.jpg" alt="Minha foto"&gt;<br>
+&lt;/body&gt;<br>
+&lt;/html&gt;
+        </div>
+        
+        <h2>🔧 Dicas Importantes</h2>
+        
+        <div class="info-box">
+            <ul>
+                <li><strong>Nome de arquivos:</strong> Use sempre letras minúsculas e sem espaços (ex: minha-pagina.html)</li>
+                <li><strong>Extensões:</strong> Arquivos HTML devem ter extensão .html ou .htm</li>
+                <li><strong>Imagens:</strong> Use formatos .jpg, .png ou .gif</li>
+                <li><strong>Organização:</strong> Crie pastas para organizar imagens, CSS e JS</li>
+                <li><strong>Atualização:</strong> Para atualizar um arquivo, basta enviar novamente com o mesmo nome</li>
+                <li><strong>Teste:</strong> Sempre teste seu site no navegador depois de fazer upload</li>
+            </ul>
+        </div>
+        
+        <h2>❓ Problemas Comuns</h2>
+        
+        <h3>1. "Não consigo conectar no servidor"</h3>
+        <ul>
+            <li>Verifique se digitou corretamente o endereço do servidor, usuário e senha</li>
+            <li>Verifique se a porta está configurada como 21</li>
+            <li>Pergunte ao professor se o servidor está ligado</li>
+        </ul>
+        
+        <h3>2. "Meu site aparece em branco"</h3>
+        <ul>
+            <li>Verifique se você enviou um arquivo chamado <code>index.html</code></li>
+            <li>Verifique se o arquivo está na raiz (pasta principal), não dentro de subpastas</li>
+        </ul>
+        
+        <h3>3. "As imagens não aparecem"</h3>
+        <ul>
+            <li>Verifique se você enviou as imagens para o servidor</li>
+            <li>Verifique o caminho no código HTML (ex: <code>&lt;img src="imagens/foto.jpg"&gt;</code>)</li>
+            <li>Cuidado com maiúsculas e minúsculas nos nomes de arquivos</li>
+        </ul>
+        
+        <h3>4. "O CSS não está funcionando"</h3>
+        <ul>
+            <li>Verifique se você enviou o arquivo .css para o servidor</li>
+            <li>Verifique o link no HTML (ex: <code>&lt;link rel="stylesheet" href="style.css"&gt;</code>)</li>
+            <li>Limpe o cache do navegador (Ctrl+F5)</li>
+        </ul>
+        
+        <h2>✅ Checklist Antes de Entregar</h2>
+        
+        <div class="success-box">
+            <ul style="list-style: none; margin-left: 0;">
+                <li>☐ Tenho um arquivo <code>index.html</code> na raiz</li>
+                <li>☐ Todos os links funcionam (sem erros 404)</li>
+                <li>☐ Todas as imagens carregam corretamente</li>
+                <li>☐ O CSS está aplicado</li>
+                <li>☐ Testei o site em diferentes navegadores</li>
+                <li>☐ Testei o site no celular (responsivo)</li>
+                <li>☐ Não há erros de português</li>
+                <li>☐ O código está organizado e indentado</li>
+            </ul>
+        </div>
+        
+        <h2>📞 Precisa de Ajuda?</h2>
+        
+        <div class="info-box">
+            <p><strong>Em caso de dúvidas:</strong></p>
+            <ol>
+                <li>Releia este guia com atenção</li>
+                <li>Verifique a seção de "Problemas Comuns"</li>
+                <li>Peça ajuda a um colega</li>
+                <li>Procure o professor</li>
+            </ol>
+        </div>
+        
+        <hr style="margin: 40px 0; border: none; border-top: 2px solid #ddd;">
+        
+        <div class="success-box" style="text-align: center;">
+            <h2>🚀 Bom trabalho!</h2>
+            <p style="font-size: 1.1em;">Agora você é um desenvolvedor web com seu próprio site na internet!</p>
+        </div>
+        
+        <div class="no-print" style="text-align: center; margin-top: 30px;">
+            <button class="btn" onclick="window.print()">🖨️ Imprimir este guia</button>
+        </div>
+    </div>
+</body>
+</html>
+

@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hospedagem de Sites - ADSPG</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            font-size: 1.2em;
+            opacity: 0.95;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .section {
+            margin-bottom: 40px;
+            line-height: 1.8;
+        }
+
+        .section h2 {
+            color: #667eea;
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #667eea;
+        }
+
+        .section p {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+        }
+
+        .highlight {
+            background: #fff3cd;
+            border-left: 5px solid #ffc107;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .highlight strong {
+            color: #856404;
+        }
+
+        .warning {
+            background: #f8d7da;
+            border-left: 5px solid #dc3545;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .warning strong {
+            color: #721c24;
+        }
+
+        .info-box {
+            background: #e7f3ff;
+            border-left: 5px solid #0066cc;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .info-box strong {
+            color: #0066cc;
+        }
+
+        .download-btn {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 30px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.1em;
+            margin: 20px 0;
+            transition: all 0.3s;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .download-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.6);
+        }
+
+        code {
+            background: #f4f4f4;
+            padding: 3px 8px;
+            border-radius: 5px;
+            color: #d63384;
+            font-family: 'Courier New', monospace;
+            font-size: 0.95em;
+        }
+
+        .users-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 10px;
+            margin-top: 20px;
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .user-item {
+            background: white;
+            padding: 12px;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+            font-weight: 500;
+            color: #333;
+            transition: all 0.3s;
+        }
+
+        .user-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+
+        footer {
+            background: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 30px;
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.8em;
+            }
+
+            .content {
+                padding: 20px;
+            }
+
+            .users-list {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🚀 Bem-vindo à Hospedagem ADSPG</h1>
+            <p>Plataforma de Hospedagem de Sites Estáticos</p>
+        </header>
+
+        <div class="content">
+            <!-- Sobre o Projeto -->
+            <div class="section">
+                <h2>📖 Sobre o Projeto</h2>
+                <p>
+                    Esta é uma plataforma de hospedagem criada especialmente para você, aluno da ADSPG! 
+                    Aqui você pode subir seus projetos de sites estáticos via FTP e eles ficarão disponíveis 
+                    na internet através do domínio <code>https://static.adspg.tec.br</code>.
+                </p>
+                <p>
+                    Você pode criar páginas HTML, estilizá-las com CSS e adicionar interatividade com JavaScript. 
+                    Além disso, é possível organizar seus projetos em subpastas! Por exemplo, se seu usuário 
+                    é "bruno", você pode ter:
+                </p>
+                <ul style="margin-left: 40px; margin-top: 10px;">
+                    <li><code>https://static.adspg.tec.br/bruno/</code> - Seu site principal</li>
+                    <li><code>https://static.adspg.tec.br/bruno/site1/</code> - Um projeto específico</li>
+                    <li><code>https://static.adspg.tec.br/bruno/portfolio/</code> - Seu portfólio</li>
+                </ul>
+                <p style="margin-top: 15px;">
+                    Organize seus projetos da forma que preferir criando subpastas no FTP!
+                </p>
+            </div>
+
+            <!-- FileZilla -->
+            <div class="section">
+                <h2>📥 Cliente FTP Recomendado</h2>
+                <p>
+                    Para enviar seus arquivos ao servidor, recomendamos o uso do <strong>FileZilla</strong>, 
+                    um cliente FTP gratuito e fácil de usar. Você pode baixá-lo diretamente aqui:
+                </p>
+                <a href="FileZilla.exe" class="download-btn">⬇️ Download FileZilla.exe</a>
+                
+                <div class="info-box" style="margin-top: 20px;">
+                    <p><strong>Dados para Conexão FTP:</strong></p>
+                    <p style="margin-top: 10px;">
+                        <strong>Servidor:</strong> <code>ftp.adspg.tec.br</code><br>
+                        <strong>Porta:</strong> <code>21</code><br>
+                        <strong>Usuário:</strong> Seu nome de usuário da lista abaixo<br>
+                        <strong>Senha:</strong> Sua data de nascimento no formato <code>DDMMAAAA</code> (sem barras)
+                    </p>
+                </div>
+            </div>
+
+            <!-- Lista de Usuários -->
+            <div class="section">
+                <h2>👥 Usuários Cadastrados</h2>
+                <p>
+                    Encontre seu nome de usuário na lista abaixo. <strong>Lembre-se:</strong> sua senha 
+                    é sua data de nascimento no formato <strong>DDMMAAAA</strong> (exemplo: se você nasceu 
+                    em 15/03/2005, sua senha é <code>15032005</code>).
+                </p>
+                
+                <div class="users-list">
+                    <div class="user-item">alessandra</div>
+                    <div class="user-item">angelo</div>
+                    <div class="user-item">arthur</div>
+                    <div class="user-item">bernardo</div>
+                    <div class="user-item">brunof</div>
+                    <div class="user-item">brunom</div>
+                    <div class="user-item">brunov</div>
+                    <div class="user-item">dayane</div>
+                    <div class="user-item">diogo</div>
+                    <div class="user-item">emilly</div>
+                    <div class="user-item">everson</div>
+                    <div class="user-item">fernando</div>
+                    <div class="user-item">filippo</div>
+                    <div class="user-item">francesco</div>
+                    <div class="user-item">donha</div>
+                    <div class="user-item">silveir</div>
+                    <div class="user-item">petroski</div>
+                    <div class="user-item">ventura</div>
+                    <div class="user-item">gilson</div>
+                    <div class="user-item">giovanni</div>
+                    <div class="user-item">slusarz</div>
+                    <div class="user-item">glaziane</div>
+                    <div class="user-item">gustavo</div>
+                    <div class="user-item">hullyan</div>
+                    <div class="user-item">igor</div>
+                    <div class="user-item">isaque</div>
+                    <div class="user-item">iverton</div>
+                    <div class="user-item">jean</div>
+                    <div class="user-item">muniz</div>
+                    <div class="user-item">marcello</div>
+                    <div class="user-item">maruan</div>
+                    <div class="user-item">ortleib</div>
+                    <div class="user-item">mateusg</div>
+                    <div class="user-item">mateuss</div>
+                    <div class="user-item">nicollas</div>
+                    <div class="user-item">otavio</div>
+                    <div class="user-item">neles</div>
+                    <div class="user-item">pedrod</div>
+                    <div class="user-item">pedroh</div>
+                    <div class="user-item">maibuk</div>
+                    <div class="user-item">taphaeli</div>
+                    <div class="user-item">raphaels</div>
+                    <div class="user-item">robert</div>
+                    <div class="user-item">donati</div>
+                    <div class="user-item">boryca</div>
+                    <div class="user-item">treicy</div>
+                    <div class="user-item">vinicius</div>
+                    <div class="user-item">william</div>
+                    <div class="user-item">strack</div>
+                </div>
+            </div>
+
+            <!-- Aviso Importante -->
+            <div class="section">
+                <h2>⚠️ IMPORTANTE: Apenas Arquivos Estáticos!</h2>
+                
+                <div class="warning">
+                    <p style="margin-bottom: 10px;">
+                        <strong>⚠️ Este servidor hospeda APENAS arquivos HTML estáticos!</strong>
+                    </p>
+                    <p>
+                        Isso significa que você pode usar:
+                    </p>
+                    <ul style="margin-left: 20px; margin-top: 10px; margin-bottom: 10px;">
+                        <li>✅ HTML</li>
+                        <li>✅ CSS</li>
+                        <li>✅ JavaScript (frontend)</li>
+                        <li>✅ Imagens (PNG, JPG, GIF, SVG, etc.)</li>
+                        <li>✅ Fontes e outros arquivos estáticos</li>
+                    </ul>
+                    <p style="margin-top: 15px;">
+                        <strong style="color: #721c24;">NÃO FUNCIONAM linguagens de backend:</strong>
+                    </p>
+                    <ul style="margin-left: 20px; margin-top: 10px;">
+                        <li>❌ PHP</li>
+                        <li>❌ Python</li>
+                        <li>❌ Ruby</li>
+                        <li>❌ Node.js</li>
+                        <li>❌ ASP, JSP ou qualquer outra linguagem server-side</li>
+                    </ul>
+                    <p style="margin-top: 15px;">
+                        <strong>Se você subir um arquivo PHP, ele será baixado ao invés de executado!</strong>
+                        Use apenas HTML, CSS e JavaScript puro.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Acesso aos Sites -->
+            <div class="section">
+                <h2>🌐 Como Acessar Seu Site</h2>
+                <div class="highlight">
+                    <p>
+                        Após subir seus arquivos via FTP, seu site estará disponível em:
+                    </p>
+                    <p style="margin-top: 15px; font-size: 1.2em;">
+                        <code>https://static.adspg.tec.br/seu_usuario/</code>
+                    </p>
+                    <p style="margin-top: 15px;">
+                        <strong>Exemplo:</strong> Se seu usuário é <code>bruno</code>, acesse em:<br>
+                        <code>https://static.adspg.tec.br/bruno/</code>
+                    </p>
+                </div>
+            </div>
+
+            <!-- Dicas Finais -->
+            <div class="section">
+                <h2>💡 Dicas Importantes</h2>
+                <ul style="margin-left: 40px; line-height: 2;">
+                    <li>Seu arquivo principal deve se chamar <code>index.html</code></li>
+                    <li>Organize seus arquivos em pastas (css/, js/, images/)</li>
+                    <li>Use nomes de arquivos em minúsculas e sem espaços</li>
+                    <li>Evite arquivos muito grandes (imagens acima de 5MB)</li>
+                    <li>Teste seu site localmente antes de subir</li>
+                </ul>
+            </div>
+        </div>
+
+        <footer>
+            <p style="font-size: 1.1em; margin-bottom: 10px;">
+                💻 Hospedagem de Sites Estáticos - ADSPG
+            </p>
+            <p style="opacity: 0.8;">
+                Domínio: <code style="background: rgba(255,255,255,0.1); color: white;">https://static.adspg.tec.br</code>
+            </p>
+            <p style="opacity: 0.8; margin-top: 5px;">
+                FTP: <code style="background: rgba(255,255,255,0.1); color: white;">ftp.adspg.tec.br</code>
+            </p>
+            <p style="margin-top: 15px; opacity: 0.8;">
+                Em caso de dúvidas, entre em contato com o professor
+            </p>
+        </footer>
+    </div>
+</body>
+</html>
