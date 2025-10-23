@@ -1,0 +1,9 @@
+# Ignorar todos os backups
+*.tar.gz
+*.sql
+*.log
+
+# Mas manter a pasta
+!.gitignore
+!README.txt
+

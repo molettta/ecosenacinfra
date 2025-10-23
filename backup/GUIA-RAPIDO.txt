@@ -1,0 +1,162 @@
+╔═══════════════════════════════════════════════════════════════════╗
+║              SISTEMA DE BACKUP - GUIA RÁPIDO                      ║
+╚═══════════════════════════════════════════════════════════════════╝
+
+🎯 COMANDO PRINCIPAL
+─────────────────────────────────────────────────────────────────────
+  backup
+
+  → Abre menu interativo com todas as opções!
+
+
+📦 FAZER BACKUP AGORA
+─────────────────────────────────────────────────────────────────────
+  backup fazer
+
+  → Salva em: /opt/backup/dados/infra-backup-YYYY-MM-DD_HH-MM-SS.tar.gz
+
+
+📋 VER BACKUPS DISPONÍVEIS
+─────────────────────────────────────────────────────────────────────
+  backup listar
+
+  → Lista todos os backups + menu interativo
+
+
+⏰ AGENDAR BACKUP AUTOMÁTICO
+─────────────────────────────────────────────────────────────────────
+  backup agendar
+
+  → Configure backups diários, semanais ou personalizados
+
+
+♻️ RESTAURAR BACKUP
+─────────────────────────────────────────────────────────────────────
+  backup restaurar
+
+  # Ou diretamente:
+  /opt/backup/scripts/restore-infra.sh /opt/backup/dados/backup.tar.gz
+
+  # Apenas volumes
+  /opt/backup/scripts/restore-infra.sh backup.tar.gz --only-volumes
+
+  # Apenas projetos
+  /opt/backup/scripts/restore-infra.sh backup.tar.gz --only-projects
+
+  # Projeto específico
+  /opt/backup/scripts/restore-infra.sh backup.tar.gz --project=wordpress
+
+
+🌐 SINCRONIZAR COM SERVIDOR REMOTO
+─────────────────────────────────────────────────────────────────────
+  backup sync
+
+  # Sincronizar manualmente (após configurar)
+  /opt/backup/scripts/sync-backups.sh
+
+
+📤 TRANSFERIR BACKUP MANUALMENTE
+─────────────────────────────────────────────────────────────────────
+  # Via SCP
+  scp /opt/backup/dados/infra-backup-*.tar.gz user@server:/destino/
+
+  # Via rsync (recomendado)
+  rsync -avz --progress /opt/backup/dados/ user@server:/destino/
+
+
+🧹 LIMPAR BACKUPS ANTIGOS
+─────────────────────────────────────────────────────────────────────
+  # Remover backups com mais de 7 dias
+  find /opt/backup/dados -name "*.tar.gz" -mtime +7 -delete
+
+  # Ou use o menu interativo
+  backup listar
+
+
+📊 INFORMAÇÕES ÚTEIS
+─────────────────────────────────────────────────────────────────────
+  # Ver espaço usado pelos backups
+  du -sh /opt/backup/dados/
+
+  # Ver espaço disponível
+  df -h /opt
+
+  # Ver último backup
+  ls -lht /opt/backup/dados/ | head -2
+
+  # Ver log dos backups automáticos
+  tail -f /var/log/backup-infra.log
+
+
+🔍 INSPECIONAR CONTEÚDO DE UM BACKUP
+─────────────────────────────────────────────────────────────────────
+  # Listar arquivos
+  tar tzf /opt/backup/dados/infra-backup-*.tar.gz
+
+  # Extrair para ver
+  mkdir /tmp/inspect-backup
+  tar xzf /opt/backup/dados/infra-backup-*.tar.gz -C /tmp/inspect-backup
+  ls -la /tmp/inspect-backup/
+
+
+📝 VER DOCUMENTAÇÃO COMPLETA
+─────────────────────────────────────────────────────────────────────
+  backup ajuda
+  # ou
+  cat /opt/backup/README.md
+
+
+⚙️ VERIFICAR STATUS
+─────────────────────────────────────────────────────────────────────
+  # Ver agendamentos do cron
+  crontab -l
+
+  # Ver containers rodando
+  docker ps
+
+  # Ver volumes
+  docker volume ls
+
+
+═══════════════════════════════════════════════════════════════════
+📂 ESTRUTURA DE PASTAS
+═══════════════════════════════════════════════════════════════════
+
+/opt/backup/
+├── backup                  → Script principal (USE ESTE!)
+├── scripts/                → Scripts do sistema
+│   ├── backup-infra.sh
+│   ├── restore-infra.sh
+│   ├── list-backups.sh
+│   ├── setup-backup-cron.sh
+│   └── setup-backup-sync.sh
+├── dados/                  → Backups salvos aqui
+│   └── infra-backup-*.tar.gz
+└── README.md               → Documentação completa
+
+
+═══════════════════════════════════════════════════════════════════
+🚀 ATALHOS DISPONÍVEIS
+═══════════════════════════════════════════════════════════════════
+
+backup                # Menu principal (interativo)
+backup fazer          # Faz backup agora
+backup listar         # Lista backups
+backup restaurar      # Restaura backup
+backup agendar        # Configura cron
+backup sync           # Configura sync remoto
+backup ajuda          # Mostra ajuda
+
+
+═══════════════════════════════════════════════════════════════════
+📦 O QUE É BACKUPEADO?
+═══════════════════════════════════════════════════════════════════
+
+✅ Bancos de dados (MySQL/PostgreSQL)
+✅ Todos os volumes Docker (~24 volumes)
+✅ Todos os projetos Docker Compose
+✅ Arquivos de configuração (.env, Caddyfile, etc)
+✅ Metadata (lista de containers e networks)
+
+
+═══════════════════════════════════════════════════════════════════

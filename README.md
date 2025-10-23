@@ -89,6 +89,19 @@ Ou use o script de deploy:
 ecosenacinfra/
 ├── .gitignore                    # Arquivos ignorados pelo git
 ├── README.md                     # Este arquivo
+├── backup/                       # 🆕 Sistema completo de backup
+│   ├── install.sh                # Instalador do sistema
+│   ├── backup                    # Script principal
+│   ├── scripts/                  # Scripts do sistema
+│   │   ├── backup-infra.sh
+│   │   ├── restore-infra.sh
+│   │   ├── list-backups.sh
+│   │   ├── setup-backup-cron.sh
+│   │   └── setup-backup-sync.sh
+│   ├── dados/                    # Dados de backup (não versionados)
+│   ├── README.md                 # Documentação completa
+│   ├── GUIA-RAPIDO.txt          # Referência rápida
+│   └── INSTALACAO.txt           # Guia de instalação
 ├── reverse-proxy/                # Caddy reverse proxy
 │   ├── Caddyfile
 │   ├── docker-compose.yml
@@ -129,8 +142,8 @@ ecosenacinfra/
 │   └── README.md
 └── scripts/                      # Scripts de automação
     ├── deploy-all.sh
-    ├── backup-all.sh
-    ├── backup-mysql.sh
+    ├── backup-all.sh             # Script de backup legado
+    ├── backup-mysql.sh           # Script de backup MySQL legado
     └── stop-all.sh
 ```
 
@@ -156,13 +169,57 @@ Os seguintes arquivos **NÃO** são versionados (estão no .gitignore):
 
 ## 🔧 Manutenção
 
-### Backup
+### Sistema de Backup Completo
+
+Este repositório inclui um sistema completo de backup e restauração para toda a infraestrutura Docker.
+
+#### Instalação do Sistema de Backup
 
 ```bash
-# Backup de todos os serviços
+cd backup
+sudo ./install.sh
+```
+
+Isso instalará o sistema em `/opt/backup/` e criará o comando `backup` no PATH.
+
+#### Uso Rápido
+
+```bash
+# Menu interativo (recomendado)
+backup
+
+# Atalhos diretos
+backup fazer          # Faz backup completo agora
+backup listar         # Lista backups disponíveis
+backup restaurar      # Restaura um backup
+backup agendar        # Configura backup automático (cron)
+backup sync           # Configura sincronização remota
+```
+
+#### O que é backupeado?
+
+- ✅ **Bancos de dados**: Dumps completos de MySQL/MariaDB e PostgreSQL
+- ✅ **Volumes Docker**: Todos os volumes (nomeados e anônimos)
+- ✅ **Projetos**: Todos os docker-compose.yml, .env, Caddyfile, etc
+- ✅ **Metadata**: Lista de containers e networks para referência
+
+#### Localização dos Backups
+
+Os backups são salvos em: `/opt/backup/dados/infra-backup-YYYY-MM-DD_HH-MM-SS.tar.gz`
+
+#### Documentação Completa
+
+Veja a documentação completa em [backup/README.md](./backup/README.md)
+
+### Scripts de Backup Legados
+
+Os scripts simples ainda estão disponíveis para casos específicos:
+
+```bash
+# Backup de todos os serviços (legado)
 ./scripts/backup-all.sh
 
-# Backup apenas do MySQL
+# Backup apenas do MySQL (legado)
 ./scripts/backup-mysql.sh
 ```
 
@@ -210,6 +267,7 @@ Os serviços usam redes Docker para comunicação:
 ## 📖 Documentação Adicional
 
 Cada serviço possui seu próprio README com instruções específicas:
+- **[Sistema de Backup](./backup/README.md)** - 🆕 Sistema completo de backup e restauração
 - [Reverse Proxy](./reverse-proxy/README.md)
 - [MySQL](./mysql/README.md)
 - [WordPress](./wordpress/README.md)

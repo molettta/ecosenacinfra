@@ -1,0 +1,123 @@
+#!/usr/bin/env bash
+
+########################
+# SISTEMA DE BACKUP - MENU PRINCIPAL
+########################
+
+SCRIPT_DIR="/opt/backup/scripts"
+
+# Cores
+GREEN='\033[0;32m'
+BLUE='\033[0;34m'
+YELLOW='\033[1;33m'
+CYAN='\033[0;36m'
+NC='\033[0m'
+
+clear
+echo -e "${CYAN}"
+cat << "EOF"
+╔═══════════════════════════════════════════════════════════════════╗
+║                    SISTEMA DE BACKUP                              ║
+║                  Infraestrutura Docker                            ║
+╚═══════════════════════════════════════════════════════════════════╝
+EOF
+echo -e "${NC}"
+
+if [ "$1" = "--help" ] || [ "$1" = "-h" ]; then
+    echo "Uso: backup [opção]"
+    echo ""
+    echo "Opções:"
+    echo "  (sem opção)    Abre o menu interativo"
+    echo "  fazer          Faz backup agora"
+    echo "  listar         Lista backups disponíveis"
+    echo "  restaurar      Restaura um backup"
+    echo "  agendar        Configura backup automático"
+    echo "  sync           Configura sincronização remota"
+    echo "  ajuda          Mostra esta mensagem"
+    echo ""
+    echo "Exemplos:"
+    echo "  backup fazer"
+    echo "  backup listar"
+    echo "  backup restaurar /opt/backup/dados/infra-backup-*.tar.gz"
+    exit 0
+fi
+
+# Atalhos diretos
+case "$1" in
+    fazer|run|exec)
+        "${SCRIPT_DIR}/backup-infra.sh"
+        exit $?
+        ;;
+    listar|list|ls)
+        "${SCRIPT_DIR}/list-backups.sh" "$@"
+        exit $?
+        ;;
+    restaurar|restore)
+        shift
+        "${SCRIPT_DIR}/restore-infra.sh" "$@"
+        exit $?
+        ;;
+    agendar|schedule|cron)
+        "${SCRIPT_DIR}/setup-backup-cron.sh"
+        exit $?
+        ;;
+    sync|remoto)
+        "${SCRIPT_DIR}/setup-backup-sync.sh"
+        exit $?
+        ;;
+esac
+
+# Menu interativo
+echo ""
+echo -e "${BLUE}Escolha uma opção:${NC}"
+echo ""
+echo "  1) 📦 Fazer backup agora"
+echo "  2) 📋 Listar backups disponíveis"
+echo "  3) ♻️  Restaurar um backup"
+echo "  4) ⏰ Agendar backups automáticos"
+echo "  5) 🌐 Configurar sincronização remota"
+echo ""
+echo "  6) 📖 Ver documentação"
+echo "  7) 🚪 Sair"
+echo ""
+read -p "Opção [1-7]: " OPCAO
+
+case ${OPCAO} in
+    1)
+        echo ""
+        "${SCRIPT_DIR}/backup-infra.sh"
+        ;;
+    2)
+        echo ""
+        "${SCRIPT_DIR}/list-backups.sh"
+        ;;
+    3)
+        echo ""
+        "${SCRIPT_DIR}/list-backups.sh"
+        ;;
+    4)
+        echo ""
+        "${SCRIPT_DIR}/setup-backup-cron.sh"
+        ;;
+    5)
+        echo ""
+        "${SCRIPT_DIR}/setup-backup-sync.sh"
+        ;;
+    6)
+        echo ""
+        if [ -f "/opt/backup/README.md" ]; then
+            less "/opt/backup/README.md" 2>/dev/null || cat "/opt/backup/README.md"
+        else
+            cat "/opt/backup/GUIA-RAPIDO.txt"
+        fi
+        ;;
+    7)
+        echo -e "${GREEN}Até logo!${NC}"
+        exit 0
+        ;;
+    *)
+        echo -e "${YELLOW}Opção inválida!${NC}"
+        exit 1
+        ;;
+esac
+
