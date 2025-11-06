@@ -8,6 +8,7 @@ Este repositório gerencia os seguintes serviços:
 
 - **[Reverse Proxy (Caddy)](./reverse-proxy)** - Proxy reverso HTTP para todos os serviços
 - **[MySQL + phpMyAdmin](./mysql)** - Banco de dados relacional
+- **[Laravel](./laravel)** - Ambiente Laravel com MySQL pronto para desenvolvimento
 - **[WordPress](./wordpress)** - Site institucional (adspg.tec.br)
 - **[Leantime](./leantime)** - Gerenciamento de projetos
 - **[n8n](./n8n)** - Automação de workflows
@@ -48,6 +49,7 @@ cd mysql
 docker-compose up -d
 
 # 2. Demais serviços
+cd ../laravel && docker-compose up -d
 cd ../leantime && docker-compose up -d
 cd ../wordpress && docker-compose up -d
 cd ../n8n && docker-compose up -d
@@ -76,7 +78,8 @@ Ou use o script de deploy:
 ### Local (desenvolvimento)
 - MySQL: localhost:3306
 - phpMyAdmin: http://localhost:8080
-- WordPress: http://localhost:8000
+- Laravel: http://localhost:8001 (porta configurável via APP_PORT)
+- WordPress: http://localhost:8000 (porta configurável)
 - Leantime: http://localhost:8081
 - n8n: http://localhost:5678
 - Node-RED: http://localhost:1880
@@ -112,6 +115,16 @@ ecosenacinfra/
 │   ├── init.sql                  # Script de inicialização
 │   ├── my.cnf                    # Configurações MySQL
 │   └── README.md
+├── laravel/                      # Laravel + MySQL
+│   ├── docker-compose.yml
+│   ├── Dockerfile
+│   ├── docker-entrypoint.sh
+│   ├── env.example
+│   ├── app/                      # Aplicação Laravel
+│   ├── mysql/                    # Scripts MySQL
+│   ├── php/                      # Configurações PHP
+│   ├── README.md
+│   └── start.sh / start.bat      # Scripts de inicialização
 ├── wordpress/                    # WordPress
 │   ├── docker-compose.yml
 │   ├── .env.example
@@ -270,6 +283,7 @@ Cada serviço possui seu próprio README com instruções específicas:
 - **[Sistema de Backup](./backup/README.md)** - 🆕 Sistema completo de backup e restauração
 - [Reverse Proxy](./reverse-proxy/README.md)
 - [MySQL](./mysql/README.md)
+- **[Laravel](./laravel/README.md)** - 🆕 Ambiente Laravel Docker pronto para uso
 - [WordPress](./wordpress/README.md)
 - [Leantime](./leantime/README.md)
 - [n8n](./n8n/README.md)
