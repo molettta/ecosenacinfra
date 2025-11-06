@@ -114,3 +114,4 @@ docker compose logs mysql
 - [ ] PHPMyAdmin acessível em http://localhost:8080
 - [ ] Sem erros nos logs
 
+
