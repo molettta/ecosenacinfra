@@ -4,7 +4,7 @@
 
 ### 1️⃣ Iniciar o sistema
 ```bash
-cd /opt/hospedagem-alunos
+cd ~/ecosenacinfra/hospedagem-alunos
 chmod +x iniciar.sh
 ./iniciar.sh
 ```

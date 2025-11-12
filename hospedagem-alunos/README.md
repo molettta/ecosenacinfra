@@ -15,7 +15,7 @@ Sistema completo de hospedagem web com FTP para alunos enviarem seus sites.
 ### 1. Iniciar os serviços
 
 ```bash
-cd /opt/hospedagem-alunos
+cd ~/ecosenacinfra/hospedagem-alunos
 docker compose up -d
 ```
 
@@ -62,7 +62,7 @@ Isso vai:
 ## 📁 Estrutura de Diretórios
 
 ```
-/opt/hospedagem-alunos/
+~/ecosenacinfra/hospedagem-alunos/
 ├── docker compose.yml          # Configuração dos containers
 ├── gerenciar-alunos.sh         # Script de gerenciamento
 ├── nginx/

@@ -11,12 +11,12 @@ services:
       - "30000-30009:30000-30009" # Portas passivas FTP
     environment:
       PUBLICHOST: "83.171.248.236"  # IP público do servidor
-      FTP_MAX_CLIENTS: 50
-      FTP_MAX_CONNECTIONS: 10
+      FTP_MAX_CLIENTS: 1000
+      FTP_MAX_CONNECTIONS: 800
     volumes:
       - ./sites:/home/ftpusers    # Pasta compartilhada com nginx
       - ftp_data:/etc/pure-ftpd   # Dados FTP persistentes
-    command: /run.sh -c 50 -C 10 -l puredb:/etc/pure-ftpd/pureftpd.pdb -E -j -R -P 83.171.248.236 -p 30000:30009
+    command: /run.sh -c 1000 -C 800 -l puredb:/etc/pure-ftpd/pureftpd.pdb -E -j -R -P 83.171.248.236 -p 30000:30009
 
   # Servidor Web Nginx para servir as páginas dos alunos
   webserver:
