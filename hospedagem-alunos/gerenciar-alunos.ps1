@@ -1,4 +1,4 @@
-# Script PowerShell para gerenciar usuários FTP (alunos)
+# Script PowerShell para gerenciar usuarios FTP (alunos)
 # Uso: .\gerenciar-alunos.ps1 [adicionar|remover|listar] [usuario] [senha]
 
 param(
@@ -17,13 +17,13 @@ $CONTAINER_NAME = "hospedagem_ftp"
 $SITES_DIR = ".\sites"
 
 function Print-Usage {
-    Write-Host "╔════════════════════════════════════════════════════════════╗" -ForegroundColor Blue
-    Write-Host "║         Gerenciador de Alunos - Hospedagem FTP           ║" -ForegroundColor Blue
-    Write-Host "╚════════════════════════════════════════════════════════════╝" -ForegroundColor Blue
+    Write-Host "================================================================" -ForegroundColor Blue
+    Write-Host "         Gerenciador de Alunos - Hospedagem FTP                " -ForegroundColor Blue
+    Write-Host "================================================================" -ForegroundColor Blue
     Write-Host ""
     Write-Host "Uso:" -ForegroundColor White
-    Write-Host "  .\gerenciar-alunos.ps1 adicionar <usuario> <senha>" -ForegroundColor Green
-    Write-Host "  .\gerenciar-alunos.ps1 remover <usuario>" -ForegroundColor Green
+    Write-Host "  .\gerenciar-alunos.ps1 adicionar [usuario] [senha]" -ForegroundColor Green
+    Write-Host "  .\gerenciar-alunos.ps1 remover [usuario]" -ForegroundColor Green
     Write-Host "  .\gerenciar-alunos.ps1 listar" -ForegroundColor Green
     Write-Host ""
     Write-Host "Exemplos:" -ForegroundColor White
@@ -34,9 +34,11 @@ function Print-Usage {
 }
 
 function Test-Container {
-    $container = docker ps --filter "name=$CONTAINER_NAME" --format "{{.Names}}" 2>$null
+    $containerOutput = docker ps --filter "name=$CONTAINER_NAME" --format "{{.Names}}" 2>&1
+    $container = $containerOutput | Out-String
+    $container = $container.Trim()
     if (-not $container -or $container -ne $CONTAINER_NAME) {
-        Write-Host "❌ Container $CONTAINER_NAME não está rodando!" -ForegroundColor Red
+        Write-Host "[ERRO] Container $CONTAINER_NAME nao esta rodando!" -ForegroundColor Red
         Write-Host "   Execute: docker compose up -d" -ForegroundColor Yellow
         exit 1
     }
@@ -49,18 +51,18 @@ function Add-Aluno {
     )
     
     if ([string]::IsNullOrWhiteSpace($Usuario) -or [string]::IsNullOrWhiteSpace($Senha)) {
-        Write-Host "❌ Usuário e senha são obrigatórios!" -ForegroundColor Red
+        Write-Host "[ERRO] Usuario e senha sao obrigatorios!" -ForegroundColor Red
         Print-Usage
         exit 1
     }
     
-    # Validar nome de usuário (apenas letras, números e underscore)
+    # Validar nome de usuario (apenas letras, numeros e underscore)
     if ($Usuario -notmatch '^[a-zA-Z0-9_]+$') {
-        Write-Host "❌ Nome de usuário inválido! Use apenas letras, números e underscore." -ForegroundColor Red
+        Write-Host "[ERRO] Nome de usuario invalido! Use apenas letras, numeros e underscore." -ForegroundColor Red
         exit 1
     }
     
-    Write-Host "📝 Adicionando aluno: $Usuario" -ForegroundColor Blue
+    Write-Host "[INFO] Adicionando aluno: $Usuario" -ForegroundColor Blue
     
     # Criar pasta do aluno
     $usuarioDir = Join-Path $SITES_DIR $Usuario
@@ -68,7 +70,7 @@ function Add-Aluno {
         New-Item -ItemType Directory -Path $usuarioDir -Force | Out-Null
     }
     
-    # Criar página HTML de exemplo
+    # Criar pagina HTML de exemplo
     $htmlContent = @"
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -113,8 +115,8 @@ function Add-Aluno {
     <div class="container">
         <div class="emoji">🚀</div>
         <h1>Bem-vindo ao site de $Usuario!</h1>
-        <p>Esta é sua página inicial. Você pode editar este arquivo enviando um novo <strong>index.html</strong> via FTP.</p>
-        <p style="margin-top: 20px; color: #999;">Faça upload dos seus arquivos HTML, CSS, JavaScript e imagens para personalizar seu site!</p>
+        <p>Esta e sua pagina inicial. Voce pode editar este arquivo enviando um novo <strong>index.html</strong> via FTP.</p>
+        <p style="margin-top: 20px; color: #999;">Faca upload dos seus arquivos HTML, CSS, JavaScript e imagens para personalizar seu site!</p>
     </div>
 </body>
 </html>
@@ -123,50 +125,67 @@ function Add-Aluno {
     $htmlPath = Join-Path $usuarioDir "index.html"
     $htmlContent | Out-File -FilePath $htmlPath -Encoding UTF8 -Force
     
-    # Adicionar usuário FTP no container
-    Write-Host "🔐 Criando usuário FTP..." -ForegroundColor Blue
-    $senhaInput = "$Senha`n$Senha`n"
-    docker exec $CONTAINER_NAME sh -c "printf `"$Senha`n$Senha`n`" | pure-pw useradd $Usuario -u ftpuser -d /home/ftpusers/$Usuario -m" 2>&1 | Out-Null
+    # Adicionar usuario FTP no container
+    Write-Host "[INFO] Criando usuario FTP..." -ForegroundColor Blue
+    
+    # Criar comando para adicionar usuario FTP
+    # Usar printf para passar senha duas vezes (confirmacao)
+    $senhaEscapada = $Senha.Replace("'", "'\''")
+    $senhaCmd = "printf '%s\n%s\n' '$senhaEscapada' '$senhaEscapada' | pure-pw useradd $Usuario -u ftpuser -d /home/ftpusers/$Usuario -m"
+    
+    # Executar comando no container
+    $output = docker exec $CONTAINER_NAME sh -c $senhaCmd 2>&1
+    $exitCode = $LASTEXITCODE
+    
+    if ($exitCode -ne 0) {
+        $outputStr = $output | Out-String
+        if ($outputStr -notmatch "already exists") {
+            Write-Host "[AVISO] Erro ao criar usuario: $outputStr" -ForegroundColor Yellow
+        }
+    }
+    
+    # Atualizar o banco de dados
     docker exec $CONTAINER_NAME sh -c "pure-pw mkdb" 2>&1 | Out-Null
     
-    Write-Host "✅ Aluno '$Usuario' adicionado com sucesso!" -ForegroundColor Green
+    Write-Host "[OK] Aluno '$Usuario' adicionado com sucesso!" -ForegroundColor Green
     Write-Host "   URL: http://localhost:8084/$Usuario/" -ForegroundColor Green
-    Write-Host "   FTP: localhost:21 (usuário: $Usuario, senha: $Senha)" -ForegroundColor Green
+    Write-Host "   FTP: localhost:21 (usuario: $Usuario, senha: $Senha)" -ForegroundColor Green
 }
 
 function Remove-Aluno {
     param([string]$Usuario)
     
     if ([string]::IsNullOrWhiteSpace($Usuario)) {
-        Write-Host "❌ Usuário é obrigatório!" -ForegroundColor Red
+        Write-Host "[ERRO] Usuario e obrigatorio!" -ForegroundColor Red
         Print-Usage
         exit 1
     }
     
-    Write-Host "⚠️  Removendo aluno: $Usuario" -ForegroundColor Yellow
+    Write-Host "[AVISO] Removendo aluno: $Usuario" -ForegroundColor Yellow
     
-    # Remover usuário FTP
+    # Remover usuario FTP
     docker exec $CONTAINER_NAME sh -c "pure-pw userdel $Usuario -m" 2>&1 | Out-Null
     docker exec $CONTAINER_NAME sh -c "pure-pw mkdb" 2>&1 | Out-Null
     
     # Fazer backup antes de remover
     $usuarioDir = Join-Path $SITES_DIR $Usuario
     if (Test-Path $usuarioDir) {
-        $backupDir = ".\backups\$(Get-Date -Format 'yyyyMMdd_HHmmss')_$Usuario"
+        $timestamp = Get-Date -Format 'yyyyMMdd_HHmmss'
+        $backupDir = ".\backups\${timestamp}_$Usuario"
         if (-not (Test-Path ".\backups")) {
             New-Item -ItemType Directory -Path ".\backups" -Force | Out-Null
         }
         Move-Item -Path $usuarioDir -Destination $backupDir -Force
-        Write-Host "📦 Backup salvo em: $backupDir" -ForegroundColor Green
+        Write-Host "[OK] Backup salvo em: $backupDir" -ForegroundColor Green
     }
     
-    Write-Host "✅ Aluno '$Usuario' removido com sucesso!" -ForegroundColor Green
+    Write-Host "[OK] Aluno '$Usuario' removido com sucesso!" -ForegroundColor Green
 }
 
 function List-Alunos {
-    Write-Host "╔════════════════════════════════════════════════════════════╗" -ForegroundColor Blue
-    Write-Host "║                    Lista de Alunos                        ║" -ForegroundColor Blue
-    Write-Host "╚════════════════════════════════════════════════════════════╝" -ForegroundColor Blue
+    Write-Host "================================================================" -ForegroundColor Blue
+    Write-Host "                    Lista de Alunos                            " -ForegroundColor Blue
+    Write-Host "================================================================" -ForegroundColor Blue
     Write-Host ""
     
     if (Test-Path $SITES_DIR) {
@@ -174,9 +193,9 @@ function List-Alunos {
         if ($diretorios) {
             foreach ($dir in $diretorios) {
                 $usuario = $dir.Name
-                Write-Host "👤 $usuario" -ForegroundColor Green
-                Write-Host "   📂 Pasta: $($dir.FullName)"
-                Write-Host "   🌐 URL: http://localhost:8084/$usuario/"
+                Write-Host "[*] $usuario" -ForegroundColor Green
+                Write-Host "   Pasta: $($dir.FullName)"
+                Write-Host "   URL: http://localhost:8084/$usuario/"
                 Write-Host ""
             }
         } else {
@@ -186,12 +205,18 @@ function List-Alunos {
         Write-Host "Nenhum aluno cadastrado ainda." -ForegroundColor Yellow
     }
     
-    Write-Host "Usuários FTP no container:" -ForegroundColor Blue
-    $ftpUsers = docker exec $CONTAINER_NAME sh -c "pure-pw list" 2>$null
-    if ($ftpUsers) {
-        Write-Host $ftpUsers
-    } else {
-        Write-Host "Container não está rodando" -ForegroundColor Yellow
+    Write-Host "Usuarios FTP no container:" -ForegroundColor Blue
+    try {
+        $ftpUsersOutput = docker exec $CONTAINER_NAME sh -c "pure-pw list" 2>&1
+        $ftpUsers = $ftpUsersOutput | Out-String
+        $ftpUsers = $ftpUsers.Trim()
+        if ($ftpUsers -and $ftpUsers -ne "") {
+            Write-Host $ftpUsers
+        } else {
+            Write-Host "Container nao esta rodando" -ForegroundColor Yellow
+        }
+    } catch {
+        Write-Host "Container nao esta rodando" -ForegroundColor Yellow
     }
 }
 
@@ -200,7 +225,7 @@ switch ($Acao) {
     "adicionar" {
         Test-Container
         if ([string]::IsNullOrWhiteSpace($Usuario) -or [string]::IsNullOrWhiteSpace($Senha)) {
-            Write-Host "❌ Usuário e senha são obrigatórios para adicionar!" -ForegroundColor Red
+            Write-Host "[ERRO] Usuario e senha sao obrigatorios para adicionar!" -ForegroundColor Red
             Print-Usage
             exit 1
         }
@@ -209,7 +234,7 @@ switch ($Acao) {
     "remover" {
         Test-Container
         if ([string]::IsNullOrWhiteSpace($Usuario)) {
-            Write-Host "❌ Usuário é obrigatório para remover!" -ForegroundColor Red
+            Write-Host "[ERRO] Usuario e obrigatorio para remover!" -ForegroundColor Red
             Print-Usage
             exit 1
         }
@@ -223,4 +248,3 @@ switch ($Acao) {
         exit 1
     }
 }
-
